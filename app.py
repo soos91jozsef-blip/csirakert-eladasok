@@ -4,14 +4,26 @@ from oauth2client.service_account import ServiceAccountCredentials
 import pandas as pd
 from datetime import date, timedelta
 import plotly.express as px
-import json
 
 # --- Oldal beállítások ---
 st.set_page_config(page_title="CsíraKert Eladások", page_icon="🌱", layout="wide")
 
-# --- Google Sheets hitelesítés ---
+# --- Google Sheets hitelesítés (mezőnként a Secrets-ből) ---
 spreadsheet_id = st.secrets["SPREADSHEET_ID"]
-service_account_info = json.loads(st.secrets["SERVICE_ACCOUNT_JSON"])
+
+service_account_info = {
+    "type": st.secrets["TYPE"],
+    "project_id": st.secrets["PROJECT_ID"],
+    "private_key_id": st.secrets["PRIVATE_KEY_ID"],
+    "private_key": st.secrets["PRIVATE_KEY"],
+    "client_email": st.secrets["CLIENT_EMAIL"],
+    "client_id": st.secrets["CLIENT_ID"],
+    "auth_uri": st.secrets["AUTH_URI"],
+    "token_uri": st.secrets["TOKEN_URI"],
+    "auth_provider_x509_cert_url": st.secrets["AUTH_PROVIDER_X509_CERT_URL"],
+    "client_x509_cert_url": st.secrets["CLIENT_X509_CERT_URL"],
+    "universe_domain": st.secrets["UNIVERSE_DOMAIN"]
+}
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
 creds = ServiceAccountCredentials.from_json_keyfile_dict(service_account_info, scope)
